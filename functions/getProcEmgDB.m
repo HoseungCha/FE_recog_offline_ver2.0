@@ -26,7 +26,6 @@ opt = struct(...
     'pathToolbox','E:\Hanyang\¿¬±¸\_toolbox\EEG_acquasition_related\eeglab11_0_5_4b',...
     'labelNames',{{'angry','clench','lipCornerUp(L)','lipCornerUp(R)',...
     'lipCornerUp(B)','fear','happy','kiss','neutral','sad','surprised'}},...
-    'nSession',20,...
     'pathOut',cd,...
     'ListSubject',1:42,...
     'ListSession',1:20,...
@@ -38,7 +37,8 @@ opt = struct(...
     'idPlot', false,...
     'featSeg',[],'featSeq',[],...
     'windSeg',[],'winSeq',[],...
-    'featList', []);
+    'featList', [],...
+    'idReturnPath',false);
 
 % set argument
 opt = chaSetArgument(opt,varargin);
@@ -52,8 +52,7 @@ addpath(genpath(fullfile(pathToolbox)));
 % set experiment paramters
 nFE = length(labelNames);% Number of facial expression
 
-% read file path of subjects
-[nameSubject,pathSubject] = read_names_of_file_in_folder(pathDB);
+% number-related argument
 nSub= length(ListSubject);
 nSes = length(ListSession);
 nSeg = floor((lenFacailExpression)/winIncSize);
@@ -72,16 +71,20 @@ nameProcessDB = [folderDBname,'_',saveFolderName];
 pathSaveDB = make_path_n_retrun_the_path(pathOut,nameProcessDB);
 if idReturnPath % just return path (you can use it when finished obataining DB)
     return;
-end
+end   
+
+% read file path of subjects
+[nameSubject,pathSubject] = read_names_of_file_in_folder(pathDB);
+
 % memory alloation
-idxFEseq = cell(nSession,nSub);
+idxFEseq = cell(nSes,nSub);
 for iSub= ListSubject
     
 % memory alloation
-winSeq = cell(nSession,1);
-winSeg = cell(nSeg,nFE,nSession);
-featSeg = NaN(nSeg,300,nFE,nSession);
-featSeq = cell(nSession);
+winSeq = cell(nSes,1);
+winSeg = cell(nSeg,nFE,nSes);
+featSeg = NaN(nSeg,300,nFE,nSes);
+featSeq = cell(nSes,1);
 
 % read subjects folder
 if SubDirectoryBDF

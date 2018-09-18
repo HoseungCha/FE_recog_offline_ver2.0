@@ -1,8 +1,9 @@
-% LDA - MATLAB subroutine to perform linear discriminant analysis
-% by Will Dwinnell and Deniz Sevis
+% This code is modified by Hoseung Cha (2018.09.10) based on
+% Will Dwinnell and Deniz Sevis's LDA matlab code
 
 % Use:
-% W = LDA(X,Y,Priors)
+% W = LDA('MDL',mdl) (when you have model)
+% W = LDA('X',X,'Y',Y) (first time)
 %
 % W       = discovered linear coefficients (first column is the constants)
 % X   = predictor data (variables in columns, observations in rows)
@@ -24,9 +25,7 @@
 %
 % % Calculate class probabilities
 % P = exp(L) ./ repmat(sum(exp(L),2),[1 2]);
-%
-%
-% modified by Hoseung Cha (2018.09.10)
+
 
 
 function mdl = fitLDA(varargin)
@@ -83,7 +82,7 @@ end
 
 W          = NaN(mdl.nClass,mdl.nFeat+1);   % model coefficients
 % Loop over classes to calculate linear discriminant coefficients
-for i = 1:mdl.nClass,
+for i = 1:mdl.nClass
     % Intermediate calculation for efficiency
     % This replaces:  opt.GroupMean(g,:) * inv(opt.PooledCov)
     if rank(mdl.PooledCov)<mdl.nFeat

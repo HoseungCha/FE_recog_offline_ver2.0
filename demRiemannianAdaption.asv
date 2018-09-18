@@ -11,8 +11,8 @@
 clc; close all; clear;
 
 % addpath
-addpath(genpath(fullfile(cd,'functions')));
-addpath(genpath(fullfile(cd,'covariancetoolbox-master')));
+addpath(fullfile(cd,'functions'));
+
 
 % get proccess DB
 pathSaveDB = getProcEmgDB(...
@@ -30,13 +30,14 @@ pathDB = fullfile(cd,'DB','DB_proc','DB_raw_demRiemannian');
 load(fullfile(pathDB,'ParameterOption'));
 
 % [E,T] = size(winSeg{1});
-M = length(opt.labelNames);
+a=1;
+M = 11;
 idxSegment = 21:60;
 update = 1;
-idxExpertUser = 1; 
-idxExpertSession = 1:20;
+idxTrainUser = 1; 
+idxTrainSession = 1:20;
 % idxTestUser = 34;
-idxTestUserList = 2:42;
+idxTestUserList = 2;
 idxTestSession = 2:20;
 idxCaliSession = 1;
 
@@ -48,12 +49,12 @@ for idxTestUser= idxTestUserList
 c = c + 1;
 %========== Prepare training data ============%
 % Read File
-fileName = sprintf('winSeg-sub-%02d',idxExpertUser);
+fileName = sprintf('winSeg-sub-%02d',idxTrainUser);
 load(fullfile(pathDB,fileName));
 
 % Compute Covariances
 xTrainCov = getCovFromWinSeg(...
-    winSeg(idxSegment,:,idxExpertSession));
+    winSeg(idxSegment,:,idxTrainSession));
 
 % Tangent space mapping
 method_mean = 'riemann';
@@ -61,7 +62,7 @@ CTrain = mean_covariances(xTrainCov,method_mean);
 
 STrain = Tangent_space(xTrainCov,CTrain)';
 yTrain = get_labels(length(idxSegment),M,...
-    length(idxExpertSession)*length(idxExpertUser));
+    length(idxTrainSession)*length(idxTrainUser));
 
 % LDA training of Expert User
 mdlExpertUser = fitLDA('X',STrain,'Y',yTrain);
@@ -107,7 +108,7 @@ c_a = c_a + 1;
 c_b = 0;
 for beta = betaList
 c_b = c_b + 1;
-fprintf('idxTestUser:%d alpha:%.1f beta:%.1f\n',idxTestUser,alpha,beta); 
+fprintf('idxTestUser 
     mdlNew = adapLDA(mdlExpertUser,mdlCali,alpha,beta);
     yPd = predLDA(mdlNew,STest);
     acc(c_a,c_b,c) = length(find(yTest==yPd))/length(yTest);

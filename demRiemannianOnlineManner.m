@@ -11,7 +11,8 @@
 clc; close all; clear;
 
 % addpath
-addpath(fullfile(cd,'functions'));
+addpath(genpath((fullfile(cd,'functions')));
+addpath(genpath(fullfile(cd,'covariancetoolbox-master')));
 
 % code analysis
 code = reportCodeExecution();
@@ -145,13 +146,14 @@ fprintf('test user %d test session %d alpha %0.1f beta %0.1f\n',...
     acc(c_a,c_b,c,iSes,idxTestUser) = length(find(yPd(idxYtest)==yTest(idxYtest)))/length(yTest(idxYtest));
    
     %- accuracy after preprocessing
-    acc_cv(c_a,c_b,c,iSes,idxTestUser) = length(find(yPd(idxYtest)==yTest(idxYtest)))/length(yTest(idxYtest));
+    acc_cv(c_a,c_b,c,iSes,idxTestUser) = length(find(yPdCv.data(idxYtest)==yTest(idxYtest)))/length(yTest(idxYtest));
     
 end
 end
-    if iSes==20
-        break;
-    end
+
+if iSes==20
+    break;
+end
 end
 
 end
