@@ -11,7 +11,6 @@
 clc; close all; clear;
 
 % addpath
-addpath(genpath('E:\OneDrive\연구지식\Remanian classification\covariancetoolbox-master\covariancetoolbox-master\'));
 addpath(fullfile(cd,'functions'));
 
 % code analysis
