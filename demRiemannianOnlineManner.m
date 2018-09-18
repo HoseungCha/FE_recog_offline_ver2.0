@@ -29,7 +29,7 @@ code = reportCodeExecution();
 
 
 % 피험자 2명으로 테스트!
-pathDB = 'D:\research\EMG_FE_recog_offline\DB\DB_proc\DB_raw_demRiemannian';
+pathDB = fullfile(cd,'DB','DB_proc','DB_raw_demRiemannian');
 load(fullfile(pathDB,'ParameterOption'));
 
 % [E,T] = size(winSeg{1});
