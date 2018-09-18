@@ -11,7 +11,7 @@
 clc; close all; clear;
 
 % addpath
-addpath(genpath(fullfile(cd,'functions')));
+addpath(fullfile(cd,'functions'));
 addpath(genpath(fullfile(cd,'covariancetoolbox-master')));
 
 % get proccess DB
