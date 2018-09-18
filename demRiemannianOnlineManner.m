@@ -151,7 +151,7 @@ fprintf('test user %d test session %d alpha %0.1f beta %0.1f\n',...
 end
 end
 
-if iSes==20
+if iSes==opt.nSession
     break;
 end
 end
